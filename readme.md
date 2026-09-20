@@ -146,3 +146,13 @@ Benchmark:
 ## License
 
 MIT © [Luke Edwards](https://lukeed.com)
+
+## 中文说明
+
+`flattie(input, glue?, keepNullish?)` 会递归地把 plain object 与 Array 压成单层对象，并返回一个全新对象（不修改输入）。
+
+- **glue（分隔符）**：默认 `'.'`。顶层键不带任何前导分隔符（如 `aaa`），仅在已有前缀时才拼接 `前缀 + glue + 键`。自定义值（如 `'FOO'`、`'~'`）会贯穿所有嵌套层级，数组下标同理（如 `bFOO0FOOa`）。
+- **数组下标**：从 `0` 开始，例如 `0.0`、`1.2.3`，不会整体偏移。
+- **nullish 极性**：默认（`keepNullish` 为假）忽略 `null` 与 `undefined`；显式传入第三个参数为真（如 `flattie(input, '.', true)`）时才保留它们，包括稀疏数组的空洞（空洞按索引写为 `undefined`）。
+- **非 nullish 值**：空串 `''`、`0`、`NaN` 都不是 nullish，默认也会保留。
+- **非 object 输入**：`null`、`undefined`、数字、字符串等一律返回 `{}`。

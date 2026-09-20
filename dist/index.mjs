@@ -1,24 +1,24 @@
-function iter(output, nullish, sep, val, key) {
+function iter(output, keepNullish, sep, val, key) {
 	var k, pfx = key ? (key + sep) : key;
 
 	if (val == null) {
-		if (nullish) output[key] = val;
+		if (keepNullish) output[key] = val;
 	} else if (typeof val != 'object') {
 		output[key] = val;
 	} else if (Array.isArray(val)) {
 		for (k=0; k < val.length; k++) {
-			iter(output, nullish, sep, val[k], pfx + k);
+			iter(output, keepNullish, sep, val[k], pfx + k);
 		}
 	} else {
 		for (k in val) {
-			iter(output, nullish, sep, val[k], pfx + k);
+			iter(output, keepNullish, sep, val[k], pfx + k);
 		}
 	}
 }
 
 export function flattie(input, glue, toNull) {
 	var output = {};
-	if (typeof input == 'object') {
+	if (input != null && typeof input == 'object') {
 		iter(output, !!toNull, glue || '.', input, '');
 	}
 	return output;
