@@ -468,4 +468,32 @@ test('array :: kitchen', () => {
 	);
 });
 
+
+test('regression :: root sparse array keeps nullish by index', () => {
+	const input = [, 'a', , null, undefined];
+	const input_string = JSON.stringify(input);
+
+	assert.equal(
+		flattie(input, '.', true), {
+			'0': undefined,
+			'1': 'a',
+			'2': undefined,
+			'3': null,
+			'4': undefined,
+		}
+	);
+
+	assert.equal(
+		flattie(input), {
+			'1': 'a',
+		}
+	);
+
+	assert.is(
+		input_string,
+		JSON.stringify(input),
+		'does not mutate original'
+	);
+});
+
 test.run();

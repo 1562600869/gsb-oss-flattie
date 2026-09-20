@@ -146,3 +146,15 @@ Benchmark:
 ## License
 
 MIT © [Luke Edwards](https://lukeed.com)
+
+## 中文语义说明
+
+`flattie(input, glue?, toNull?)` 将嵌套的 plain object / Array 递归展开为单层扁平对象：
+
+- **默认分隔符**：未传 `glue` 时使用 `'.'`；自定义 glue（如 `'~'`、`'FOO'`）会贯穿所有嵌套层级。
+- **nullish 处理**：默认（`toNull` 为假）丢弃值为 `null` / `undefined` 的键；仅当 `toNull === true` 时才保留，稀疏数组的空洞也会按索引写出（值为 `undefined`）。
+- **数组索引**：从 `0` 开始，如 `0.0`、`1.2.3`。
+- **根层键**：顶层键不带前导分隔符，仅在已有前缀时才拼接 `prefix + glue + key`。
+- **非 object 输入**（`null`、`undefined`、number、string 等）一律返回 `{}`。
+- **非 nullish 假值**：`''`、`0`、`NaN` 不属于 nullish，默认也会保留。
+- **不修改原对象**。
